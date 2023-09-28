@@ -23,6 +23,7 @@ const productSchema = new Schema(
     availableDays: {
       type: [Date],
       default: [],
+      required: true,
     },
     mediaUrl:[ 
         {
