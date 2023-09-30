@@ -20,6 +20,9 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
+const productRoute = require("./routes/product.routes");
+app.use("/", productRoute);
+
 const authSignupRouter = require("./routes/auth/signup.routes");       //  <== IMPORT
 app.use("/auth", authSignupRouter); 
 
@@ -31,9 +34,6 @@ app.use("/auth", authVerifyRouter);
 
 const profileRoute = require("./routes/user/profile.routes");
 app.use("/profile", profileRoute);
-
-const productRoute = require("./routes/product.routes");
-app.use("/product", productRoute);
 
 const bookingRoute = require("./routes/booking.routes");
 app.use("/booking", bookingRoute);

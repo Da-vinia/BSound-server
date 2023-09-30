@@ -45,16 +45,54 @@ router.put('/', isAuthenticated, fileUploader.single('avatar'), (req, res, next)
 // })
 
 
-router.get("/", isAuthenticated, (req,res)=> {
-    const userId = req.payload._id
+// router.get("/", isAuthenticated, (req,res)=> {
+//     const userId = req.payload._id
+//     User.findById(userId)
+//     .then((foundUser)=> {
+
+//         res.status(200).json({user: foundUser })
+//     })
+//     .catch((error)=> {
+//         console.log("Error response",error)
+//     })
+// })
+
+router.get("/", isAuthenticated, (req, res) => {
+    const userId = req.payload._id;
+  
     User.findById(userId)
-    .then((foundUser)=> {
-        res.status(200).json({user: foundUser })
-    })
-    .catch((error)=> {
-        console.log("Error response",error)
-    })
-})
+      .then((foundUser) => {
+        console.log("Response from User", foundUser);
+        
+        Product.find({ owner: userId })
+          .then((foundProducts) => {
+            console.log("Response from Products", foundProducts);
+  
+            Booking.find({ booker: userId })
+              .populate("productBooked")
+              .then((bookings) => {
+                console.log("Response from Bookings", bookings);
+  
+                
+                res
+                  .status(200)
+                  .json({ user: foundUser, products: foundProducts, bookings });
+              })
+              .catch((error) => {
+                console.log("Error response", error);
+                res.status(500).json({ error: "Error retrieving user's bookings" });
+              });
+          })
+          .catch((error) => {
+            console.log("Error response", error);
+            res.status(500).json({ error: "Error retrieving user's products" });
+          });
+      })
+      .catch((error) => {
+        console.log("Error response", error);
+        res.status(500).json({ error: "Error retrieving user" });
+      });
+  });
 
 // GET - to display only the products of the user
 // router.get('/profile/products/', isAuthenticated, (req, res) => {

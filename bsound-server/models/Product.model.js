@@ -20,16 +20,27 @@ const productSchema = new Schema(
       min: 10,
       max: 100,
     },
-    availableDays: {
-      type: [Date],
-      default: [],
-      required: true,
+    // 
+    availability: {
+      startDate: {
+        type: Date,
+        required: true,
+      },
+      endDate: {
+        type: Date,
+        required: true,
+      },
     },
-    mediaUrl:[ 
-        {
-            type: String,
-        },
-    ],
+    // mediaUrl:[ 
+    //     {
+    //         type: String,
+    //     },
+    // ],
+    mediaUrl:
+      {
+          type: String,
+      },
+
     pricePerDay: {
         type: Number,
         required: [true, 'Price per day is required.'],
