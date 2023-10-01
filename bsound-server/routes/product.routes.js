@@ -135,27 +135,7 @@ router.put("/products/:productId", isAuthenticated, fileUploader.single("mediaUr
   });
 
 // DELETE 
-// router.delete("products/:productId", isAuthenticated, (req, res, next) => {
-//     const { productId } = req.params;
-
-//     if(!mongoose.Types.ObjectId.isValid(productId)) {
-//       res.status(400).json({ message: 'Specified id is not valid' });
-//       return;
-//   }
-  
-//     Product.findByIdAndRemove(productId)
-//       .then(() => {
-//         if (!deletedProduct) {
-//           return res.status(404).json({ error: "Product not found." });
-//         }
-//         res.json({ message: "Product is removed successfully." });
-//       })
-//       .catch((error) => {
-//         res.status(400).json({ error: "Product cannot be removed." });
-//       });
-//   });
-
-  router.delete("/products/:productId", isAuthenticated, (req, res, next) => {
+router.delete("/products/:productId", isAuthenticated, (req, res, next) => {
     const { productId } = req.params;
   
     if (!mongoose.Types.ObjectId.isValid(productId)) {

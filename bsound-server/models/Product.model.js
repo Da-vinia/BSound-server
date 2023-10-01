@@ -78,6 +78,12 @@ const productSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    bookedDates: [
+      {
+        startDate: Date,
+        endDate: Date,
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    
