@@ -4,6 +4,7 @@ const Product = require('../models/Product.model');
 const fileUploader = require("../config/cloudinary.config");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 const mongoose = require('mongoose');
+const ProductSearch = require("../models/ProductSearch.model");
 
 // GET - get all the products availables
 router.get("/products", (req, res, next) => {
@@ -161,8 +162,65 @@ router.delete("/products/:productId", isAuthenticated, (req, res, next) => {
         res.status(400).json({ error: "Product cannot be removed." });
       });
   });
-  
-  
-  
-  
+
+// GET route to search all the products
+// router.post("/products", isAuthenticated, (req, res, next) => {
+//   const keyword = req.body.keyword;
+
+//   Product.find({ $text: { $search: keyword } })
+//     .then((products) => {
+//       console.log("Found this!!")
+//       res.json(products);
+//     })
+//     .catch((error) => {
+//       console.error("Error searching for products:", error);
+//       res.status(500).json({ error: "Internal Server Error" });
+//     });
+// });
+// router.post("/products/search", (req, res, next) => {
+//   const keyword = req.body.keyword;
+
+//   // Construye la consulta de búsqueda
+//   const query = {};
+
+//   if (keyword) {
+//     query.$or = [
+//       { productName: { $regex: keyword, $options: "i" } },
+//       { description: { $regex: keyword, $options: "i" } },
+//       { category: { $regex: keyword, $options: "i" } }, 
+//       { pricePerDay: { $regex: keyword, $options: "i" } },
+//       { location: { city: { $regex: keyword, $options: "i" } } },
+//       { location: { district: { $regex: keyword, $options: "i" } } },
+//       { contactDetails: { $regex: keyword, $options: "i" } },
+//       { availability: { startDate:{ $regex: keyword, $options: "i" } }},
+//       { availability: { endDate:{ $regex: keyword, $options: "i" } }},
+//     ];
+//   }
+
+//   // Realiza la búsqueda utilizando el esquema de creación de productos
+//   Product.find(query)
+    
+//     .then((products) => {
+//       res.json(products);
+//     })
+//     .catch((error) => {
+//       res.status(500).json({ error: "Error searching for products." });
+//     });
+// });
+router.post('/products/search', (req, res) => {
+  const keyword = req.body.keyword;
+  Product.find({
+    $text: {
+      $search: keyword
+    }
+  })
+  .then((products) => {
+    res.json(products);
+  })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  });
+});
+
   module.exports = router;

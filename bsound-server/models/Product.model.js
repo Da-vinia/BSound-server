@@ -9,6 +9,7 @@ const productSchema = new Schema(
       trim: true,
       min: 3,
       max: 50,
+      text: true,
     },
     category: {
       type: String,
@@ -19,6 +20,7 @@ const productSchema = new Schema(
       type: String,
       min: 10,
       max: 100,
+      text: true,
     },
     // 
     availability: {
