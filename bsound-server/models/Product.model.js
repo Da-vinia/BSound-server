@@ -72,18 +72,18 @@ const productSchema = new Schema(
     contactDetails: {
         type: String,
         required: [true, 'Email is required.'],
-        select: false,
+        default: false,
     },
     owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
     },
-    bookedDates: [
-      {
-        startDate: Date,
-        endDate: Date,
-      },
-    ],
+    // bookedDates: [
+    //   {
+    //     startDate: Date,
+    //     endDate: Date,
+    //   },
+    // ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    

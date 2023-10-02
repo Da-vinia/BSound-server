@@ -46,13 +46,14 @@ router.post("/products", isAuthenticated, fileUploader.single("mediaUrl"), (req,
 
   // const images = req.files.map((file) => file.path);
 
-    let { productName, category, description,  availability: { 
-      startDate,
-      endDate,
-    }, mediaUrl, pricePerDay, location, contactDetails } = req.body;
+    console.log('body', req.body);
+
+
+    let { productName, category, description, startDate, endDate, pricePerDay,locationCity, locationDistrict, contactDetails, mediaUrl } = req.body;
     // const owner = req.user;
     let owner = req.payload._id;
     
+    mediaUrl = req.file ? req.file.path : undefined;
     // if (Array.isArray(req.files) && req.files.length > 0) {
     // const mediaUrls = req.files.map((file) => file.path);
 
@@ -60,20 +61,21 @@ router.post("/products", isAuthenticated, fileUploader.single("mediaUrl"), (req,
       productName,
       category,
       description,
-      // availableDays,
       availability: { 
         startDate,
-        endDate,
+        endDate
       },
       pricePerDay,
-      location,
+      location: {
+        city: locationCity,
+        district: locationDistrict
+      },
       contactDetails,
       owner,
       mediaUrl
      // mediaUrl: mediaUrls
     });
 
-    mediaUrl = req.file ? req.file.path : undefined;
   
     console.log(newProduct)
     newProduct
@@ -94,11 +96,13 @@ router.post("/products", isAuthenticated, fileUploader.single("mediaUrl"), (req,
 // PUT - edit an existing product
 router.put("/products/:productId", isAuthenticated, fileUploader.single("mediaUrl"), (req, res, next) => {
     const { productId } = req.params;
-    const { productName, category, description,  availability: { 
-      startDate,
-      endDate,
-    } , mediaUrl, pricePerDay, location, contactDetails } = req.body;
-    // const mediaUrls = req.files.map((file) => file.path); 
+    // const { productName, category, description,  availability: { 
+    //   startDate,
+    //   endDate,
+    // } , mediaUrl, pricePerDay, location, contactDetails } = req.body;
+    let { productName, category, description, startDate, endDate, pricePerDay,locationCity, locationDistrict, contactDetails, mediaUrl } = req.body;
+
+    mediaUrl = req.file ? req.file.path : undefined;
 
     if(!mongoose.Types.ObjectId.isValid(productId)) {
       res.status(400).json({ message: 'Specified id is not valid' });
@@ -118,7 +122,10 @@ router.put("/products/:productId", isAuthenticated, fileUploader.single("mediaUr
         },
         mediaUrl,
         pricePerDay,
-        location,
+        location: {
+          city: locationCity,
+          district: locationDistrict
+        },
         contactDetails,
       },
       { new: true }
