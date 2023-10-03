@@ -207,8 +207,9 @@ router.delete("/products/:productId", isAuthenticated, (req, res, next) => {
 //       res.status(500).json({ error: "Error searching for products." });
 //     });
 // });
-router.post('/products/search', (req, res) => {
+router.post('/products/search/keyword', (req, res) => {
   const keyword = req.body.keyword;
+
   Product.find({
     $text: {
       $search: keyword
@@ -218,6 +219,23 @@ router.post('/products/search', (req, res) => {
     res.json(products);
   })
   .catch((error) => {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  });
+});
+
+// find by category:
+router.get('/products/search/category', (req, res) => {
+  const {category} = req.query;
+  const filter = category ? {category} : {};
+
+  Product.find(filter)
+    .sort({ createdAt: -1 })
+    .populate("owner")
+    .then((products) => {
+    res.json(products);
+  })
+    .catch((error) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   });
