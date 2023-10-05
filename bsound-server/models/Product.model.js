@@ -9,6 +9,7 @@ const productSchema = new Schema(
       trim: true,
       min: 3,
       max: 50,
+      text: true,
     },
     category: {
       type: String,
@@ -19,16 +20,29 @@ const productSchema = new Schema(
       type: String,
       min: 10,
       max: 100,
+      text: true,
     },
-    availableDays: {
-      type: [Date],
-      default: [],
+    // 
+    availability: {
+      startDate: {
+        type: Date,
+        required: true,
+      },
+      endDate: {
+        type: Date,
+        required: true,
+      },
     },
-    mediaUrl:[ 
-        {
-            type: String,
-        },
-    ],
+    // mediaUrl:[ 
+    //     {
+    //         type: String,
+    //     },
+    // ],
+    mediaUrl:
+      {
+          type: String,
+      },
+
     pricePerDay: {
         type: Number,
         required: [true, 'Price per day is required.'],
@@ -60,12 +74,18 @@ const productSchema = new Schema(
     contactDetails: {
         type: String,
         required: [true, 'Email is required.'],
-        select: false,
+        default: false,
     },
     owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    // bookedDates: [
+    //   {
+    //     startDate: Date,
+    //     endDate: Date,
+    //   },
+    // ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`    

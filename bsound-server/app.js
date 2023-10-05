@@ -20,6 +20,9 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
+const productRoute = require("./routes/product.routes");
+app.use("/", productRoute);
+
 const authSignupRouter = require("./routes/auth/signup.routes");       //  <== IMPORT
 app.use("/auth", authSignupRouter); 
 
@@ -27,9 +30,13 @@ const authLoginRouter = require("./routes/auth/login.routes");       //  <== IMP
 app.use("/auth", authLoginRouter); 
 
 const authVerifyRouter = require("./routes/auth/verify.routes");       //  <== IMPORT
-app.use("/auth", authVerifyRouter); 
+app.use("/auth", authVerifyRouter);
 
+const profileRoute = require("./routes/user/profile.routes");
+app.use("/profile", profileRoute);
 
+const bookingRoute = require("./routes/booking.routes");
+app.use("/booking", bookingRoute);
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
